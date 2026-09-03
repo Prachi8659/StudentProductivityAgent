@@ -1,0 +1,23 @@
+# ── Web framework ──────────────────────────────────────────────────────────────
+fastapi==0.111.0
+uvicorn[standard]==0.29.0
+
+# ── LangGraph / LangChain ──────────────────────────────────────────────────────
+langgraph==0.1.5
+langchain==0.2.5
+langchain-openai==0.1.8        # used when LLM_PROVIDER=openai
+langchain-groq                 # used when LLM_PROVIDER=groq  (pip install langchain-groq)
+# langchain-anthropic           # used when LLM_PROVIDER=anthropic (install separately)
+
+# ── Database ───────────────────────────────────────────────────────────────────
+sqlalchemy==2.0.30
+
+# ── Frontend ───────────────────────────────────────────────────────────────────
+streamlit==1.35.0
+requests==2.32.3               # used by the Streamlit UI to call the FastAPI backend
+
+# ── Environment / Config ───────────────────────────────────────────────────────
+python-dotenv==1.0.1
+
+# ── Utilities ──────────────────────────────────────────────────────────────────
+pydantic==2.7.3                # data validation (already a FastAPI dependency)
