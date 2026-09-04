@@ -208,7 +208,7 @@ with tab_tasks:
         ["⏳ Pending", "🚨 Overdue", "✅ Completed"]
     )
 
-    def _render_task_row(task: dict, show_actions: bool = True) -> None:
+    def _render_task_row(task: dict, show_actions: bool = True, tab_key: str = "") -> None:
         """Render one task card with optional complete / delete buttons."""
         with st.container(border=True):
             col_info, col_done, col_del = st.columns([7, 1, 1])
@@ -225,14 +225,14 @@ with tab_tasks:
                     st.caption(f"📝 {task['description']}")
             if show_actions:
                 with col_done:
-                    if st.button("✅", key=f"done_{task['id']}", help="Mark complete"):
+                    if st.button("✅", key=f"done_{tab_key}_{task['id']}", help="Mark complete"):
                         try:
                             api_client.complete_task(task["id"])
                             st.rerun()
                         except RuntimeError as e:
                             st.error(str(e))
                 with col_del:
-                    if st.button("🗑️", key=f"del_{task['id']}", help="Delete task"):
+                    if st.button("🗑️", key=f"del_{tab_key}_{task['id']}", help="Delete task"):
                         try:
                             api_client.delete_task(task["id"])
                             st.rerun()
@@ -252,7 +252,7 @@ with tab_tasks:
         else:
             st.caption(f"{len(pending_tasks)} pending task(s)")
             for task in pending_tasks:
-                _render_task_row(task)
+                _render_task_row(task, tab_key="pending")
 
     # Overdue
     with sub_overdue:
@@ -267,7 +267,7 @@ with tab_tasks:
         else:
             st.warning(f"⚠️ You have {len(overdue_tasks)} overdue task(s). Address these first!")
             for task in overdue_tasks:
-                _render_task_row(task)
+                _render_task_row(task, tab_key="overdue")
 
     # Completed
     with sub_completed:
@@ -282,7 +282,7 @@ with tab_tasks:
         else:
             st.caption(f"{len(completed_tasks)} completed task(s)")
             for task in completed_tasks:
-                _render_task_row(task, show_actions=False)
+                _render_task_row(task, show_actions=False, tab_key="completed")
 
 
 # ════════════════════════════════════════════════════════════════════════════
